@@ -1,0 +1,18 @@
+name: "💡 Feature Request"
+description: "提出 hung-yi-lee-skill 的功能改進、知識圖譜擴充或維護建議"
+labels: ["enhancement"]
+body:
+  - type: "textarea"
+    id: "feature"
+    attributes:
+      label: "需求或功能建議"
+      description: "清楚說明希望新增或改善的功能"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "context"
+    attributes:
+      label: "使用情境與價值"
+      description: "這個功能如何幫助李宏毅老師課程知識的蒸餾、查詢或 Agent 使用？"
+    validations:
+      required: true

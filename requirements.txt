@@ -1,0 +1,4 @@
+youtube-transcript-api>=1.2,<2  # freshness-hold: upstream compatibility floor
+networkx>=3.4  # freshness-hold: upstream compatibility floor
+python-louvain>=0.16  # freshness-hold: upstream compatibility floor
+yt-dlp>=2024.3.10  # freshness-hold: upstream compatibility floor for yt-dlp flat-playlist CLI

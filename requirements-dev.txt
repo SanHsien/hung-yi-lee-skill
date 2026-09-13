@@ -1,0 +1,3 @@
+pytest>=9
+ruff>=0.16
+networkx>=3.4  # freshness-hold: upstream compatibility floor
