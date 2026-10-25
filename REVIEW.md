@@ -37,7 +37,7 @@ gh repo set-default --view
 |---|---|---|
 | R-01 | P2 | `.gitignore` 加入 `.env`、`.venv`、`upstream-review-report.md`、`dependency-freshness-report.md`、`.ruff_cache/` |
 | R-02 | P2 | 建立獨立維護測試目錄 `tools/tests/` 與獨立 `tools/pytest.ini`，避免產品環境污染 |
-| R-03 | P2 | 建立 `FORK.md`、`NOTICE.md`、`LICENSE`、`SECURITY.md`、`AGENTS.md`、`CLAUDE.md`、`GEMINI.md`，寫明對外邊界與安全性 |
+| R-03 | P2 | 建立 `FORK.md`、`NOTICE.md`、`LICENSE`、`SECURITY.md`、`AGENTS.md`（`CLAUDE.md`、`GEMINI.md` 後已刪除，內容併入 `AGENTS.md`），寫明對外邊界與安全性 |
 | R-04 | P3 | `README.md`（繁體中文）與 `README.en.md`（英文鏡像）雙向互指，並標明 upstream 與 MIT 條款 |
 | R-05 | P2 | 建立 `tools/dev_check.ps1` 與 `tools/bootstrap_dev.ps1`，規範 Windows 11 原生 PowerShell 驗收門禁（注入 `PYTHONUTF8=1` 防範 CP950 解碼例外） |
 | R-06 | P2 | 建立 `tools/test_product.ps1` 驗證知識庫 lint、搜尋與知識圖譜查詢 |

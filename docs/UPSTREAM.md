@@ -81,3 +81,7 @@ Baseline 代表「已審查」，不代表「全部已合併」。
    - 每次執行 `tools/check_upstream_updates.py` 或 GitHub Actions 每週排程時，檢查器會自動過濾 `number <= watermark` 的項目。
    - 只有編號大於 **#4** 的新開 PR / Issue，或 `main` 上高於 `df5665d` 的新 Commit，才會出現在待審報告中。
    - 當新項目被審查完畢並於 `docs/DECISIONS.md` 記錄結論後，再遞增更新 baseline 水位。
+
+## 2026-10-25：例行巡檢
+
+上游 `main` 仍為 `df5665d`，PR 最高 `#3`、Issue 最高 `#4`，無新項目。水位不變，`reviewed_date` 推進到 2026-10-25；決策見 [`docs/DECISIONS.md`](DECISIONS.md)。

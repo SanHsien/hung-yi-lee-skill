@@ -88,3 +88,13 @@
 - 遵循高標準程式碼品質與防禦性設計原則。
 
 
+
+## 2026-10-25：上游巡檢無新項目、ruff 0.17 延後紀錄
+
+**決定**：
+1. 上游 `voidful/hung-yi-lee-skill` `main` 仍為 `df5665d`；PR 最高仍為 `#3`（`git ls-remote` 的 `refs/pull/*`），Issue 最高仍為 `#4`。無可引進項目，`reviewed_through` 與 PR／Issue 水位不變，只把 `reviewed_date` 推進到 2026-10-25。
+2. `Dependency freshness` 紅燈來自 `ruff` 0.17.2 標為 REVIEW UPDATE。宣告 `ruff>=0.16` 本就允許 0.17.x，CI 實際裝的就是 0.17.2 且全綠；本機以 0.17.2 跑 gate（compileall、Ruff E9+F、pytest、連結檢查）亦全綠。依政策不調高下限，改在 `.github/dependency-deferrals.json` 記 `deferredLatest: 0.17.2`。
+
+**觸發條件**：
+- 上游 `main` 高於 `df5665d`，或出現編號 > `#4` 的 PR／Issue：依 `docs/UPSTREAM.md` 流程逐筆審查。
+- PyPI 上 `ruff` 超過 0.17.2：延後自動失效，重新審視 release notes 並跑 gate。

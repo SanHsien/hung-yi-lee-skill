@@ -1,4 +1,9 @@
 {
   "$comment": "每月依賴檢查用：已經看過、但這次不升的決定。deferredLatest 記下當時審視的版本，PyPI 一超過它就自動恢復提醒。",
-  "deferrals": {}
+  "deferrals": {
+    "ruff": {
+      "deferredLatest": "0.17.2",
+      "reason": "2026-10-25 審視：宣告 >=0.16 已涵蓋 0.17.x，CI 與 gate（E9+F）在 0.17.2 實測全綠；宣告維持不動，PyPI 超過 0.17.2 時重審"
+    }
+  }
 }
