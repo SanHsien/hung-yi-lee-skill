@@ -56,7 +56,6 @@ def test_traditional_taiwan_forms_convert_back_to_simplified() -> None:
         ("恢复", "恢復"),
         ("回复", "回覆"),
         ("反复", "反覆"),
-        ("头发", "頭髮"),
         ("复制", "複製"),
         ("修复", "修復"),
         ("公里", "公里"),
@@ -115,7 +114,7 @@ def test_hair_converts_back_to_simplified() -> None:
 
 @pytest.mark.parametrize(
     "simplified",
-    ["重复原来", "重复发生", "重复活动", "重复位置", "处理发现", "回答复杂", "汇报复杂度", "健康复杂"],
+    ["重复原来", "重复发生", "重复活动", "重复位置", "处理发现", "回答复杂", "汇报复杂度", "健康复杂", "开头发现", "里头发生"],
 )
 def test_word_boundary_straddling_text_gets_plain_character_conversion(
     simplified: str,
@@ -128,3 +127,7 @@ def test_alternate_only_words_still_widen_search() -> None:
     assert "復原" in zh.expand_query_tokens(["复原"])
     assert "理髮" in zh.expand_query_tokens(["理发"])
     assert "康復" in zh.expand_query_tokens(["康复"])
+
+
+def test_hair_query_still_reaches_the_hair_form_via_expansion() -> None:
+    assert "頭髮" in zh.expand_query_tokens(["头发"])

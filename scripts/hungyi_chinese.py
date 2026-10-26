@@ -153,14 +153,14 @@ def is_stop_token(tok: str) -> bool:
 # anything not listed falls back to the character table. Forms follow the Taiwan
 # usage seen in the transcripts (e.g. 反覆 68 vs 反復 2, 回覆 24 vs 回復 5).
 _S2T_PHRASES: dict[str, str] = {
-    "恢复": "恢復", "修复": "修復", "反复": "反覆", "头发": "頭髮", "复制": "複製",
+    "恢复": "恢復", "修复": "修復", "反复": "反覆", "复制": "複製",
     "回复": "回覆", "公里": "公里",
 }
 # Other plausible Taiwan forms of a phrase, added by expand_query_tokens only.
 # These words often straddle a word boundary (重复原来, 处理发现, 回答复杂), so they
 # must never drive the primary conversion; they only widen the search.
 _S2T_PHRASE_ALTERNATES: dict[str, str] = {
-    "回复": "回復", "答复": "答覆", "批复": "批覆", "理发": "理髮", "洗发": "洗髮",
+    "回复": "回復", "头发": "頭髮", "答复": "答覆", "批复": "批覆", "理发": "理髮", "洗发": "洗髮",
     "发型": "髮型", "制作": "製作", "制造": "製造", "报复": "報復", "康复": "康復",
     "复原": "復原", "复发": "復發", "复活": "復活", "复位": "復位", "复兴": "復興",
     "复苏": "復甦", "光复": "光復", "收复": "收復",
