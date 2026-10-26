@@ -30,6 +30,14 @@ _TRADITIONAL = '傌㑶偑㑳倲㑯儸𠗣劏劃劚噚喎㘚㜄媰𡞵𡢃㜏孋�
 S2T_MAP: dict[str, str] = dict(zip(_SIMPLIFIED, _TRADITIONAL))
 T2S_MAP: dict[str, str] = dict(zip(_TRADITIONAL, _SIMPLIFIED))
 
+# The generated table is one-to-one, so it picks variant or non-Taiwan glyphs for
+# characters with several traditional forms (為 vs 爲, 裡 vs 裏, 複 vs 復). The
+# transcripts are written in Taiwan standard forms, so pin those.
+_TAIWAN_S2T_OVERRIDES = {"为": "為", "里": "裡", "着": "著", "复": "複", "台": "台"}
+_TAIWAN_T2S_OVERRIDES = {"為": "为", "裡": "里", "複": "复"}
+S2T_MAP.update(_TAIWAN_S2T_OVERRIDES)
+T2S_MAP.update(_TAIWAN_T2S_OVERRIDES)
+
 AI_TERM_SYNONYMS: dict[str, list[str]] = {
     "神经网络": ["類神經網路", "神經網路", "神經網絡", "neural network"],
     "類神經網路": ["神經網路", "神經網絡", "神经网络", "neural network"],
