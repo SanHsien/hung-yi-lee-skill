@@ -15,7 +15,7 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 LINK_PATTERN = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
-IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
+FENCE_PATTERN = re.compile(r"(?ms)^[ \t]*(```|~~~).*?^[ \t]*\1[ \t]*$")
 HTML_SRC_PATTERN = re.compile(r"""(?is)<img[^>]+src=["']([^"']+)["']""")
 SKIP_PREFIXES = ("http://", "https://", "mailto:", "tel:", "#")
 SKIP_NAMES = {
@@ -60,7 +60,11 @@ def iter_documents() -> list[Path]:
 
 
 def _missing_relative(path: Path, target: str) -> str | None:
-    target = target.strip().strip("<>")
+    target = target.strip()
+    if target.startswith("<") and ">" in target:
+        target = target[1 : target.index(">")]
+    else:
+        target = target.split(None, 1)[0] if target else target
     if not target or target.startswith(SKIP_PREFIXES):
         return None
     file_part = unquote(target.split("#", 1)[0])
@@ -78,11 +82,15 @@ def _missing_relative(path: Path, target: str) -> str | None:
 
 def check_document(path: Path) -> list[str]:
     problems: list[str] = []
-    text = path.read_text(encoding="utf-8")
-    for pattern in (LINK_PATTERN, IMAGE_PATTERN, HTML_SRC_PATTERN):
+    text = FENCE_PATTERN.sub("", path.read_text(encoding="utf-8"))
+    seen: set[str] = set()
+    # LINK_PATTERN also matches the ``[alt](src)`` part of an image, so
+    # IMAGE_PATTERN adds nothing; report each broken target once.
+    for pattern in (LINK_PATTERN, HTML_SRC_PATTERN):
         for match in pattern.finditer(text):
             missing = _missing_relative(path, match.group(1))
-            if missing:
+            if missing and missing not in seen:
+                seen.add(missing)
                 problems.append(missing)
     return problems
 
