@@ -48,3 +48,42 @@ def test_traditional_taiwan_forms_convert_back_to_simplified() -> None:
     assert zh.t2s("因為") == "因为"
     assert zh.t2s("這裡") == "这里"
     assert zh.t2s("複雜") == "复杂"
+
+
+@pytest.mark.parametrize(
+    ("simplified", "traditional"),
+    [
+        ("恢复", "恢復"),
+        ("回复", "回覆"),
+        ("答复", "答覆"),
+        ("反复", "反覆"),
+        ("头发", "頭髮"),
+        ("复制", "複製"),
+        ("制作", "製作"),
+        ("修复", "修復"),
+        ("复原", "復原"),
+        ("公里", "公里"),
+        ("请回复邮件", "請回覆郵件"),
+    ],
+)
+def test_word_level_simplified_converts_to_the_word_taiwan_uses(
+    simplified: str, traditional: str
+) -> None:
+    assert zh.s2t(simplified) == traditional
+
+
+def test_character_level_conversion_still_applies_outside_listed_words() -> None:
+    assert zh.s2t("复杂") == "複雜"
+    assert zh.s2t("发现") == "發現"
+    assert zh.s2t("制度") == "制度"
+
+
+def test_reply_query_also_expands_to_the_other_taiwan_form() -> None:
+    expanded = zh.expand_query_tokens(["回复"])
+    assert "回覆" in expanded and "回復" in expanded
+    assert "回複" not in expanded
+
+
+@pytest.mark.parametrize("simplified", ["恢复", "回复", "反复", "头发", "复制", "修复"])
+def test_word_level_queries_reach_the_corpus(simplified: str, corpus: str) -> None:
+    assert any(t in corpus for t in zh.expand_query_tokens([simplified]))

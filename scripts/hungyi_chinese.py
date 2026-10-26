@@ -148,9 +148,41 @@ def is_stop_token(tok: str) -> bool:
     )
 
 
+# Word-level overrides. A one-to-one character table cannot choose between 復/複,
+# 發/髮 or 制/製, because the right glyph depends on the word. Longest match wins;
+# anything not listed falls back to the character table. Forms follow the Taiwan
+# usage seen in the transcripts (e.g. 反覆 68 vs 反復 2, 回覆 24 vs 回復 5).
+_S2T_PHRASES: dict[str, str] = {
+    "恢复": "恢復", "修复": "修復", "康复": "康復", "复原": "復原", "复兴": "復興",
+    "复活": "復活", "复位": "復位", "复发": "復發", "报复": "報復", "光复": "光復",
+    "收复": "收復", "复苏": "復甦", "回复": "回覆", "答复": "答覆", "批复": "批覆",
+    "反复": "反覆", "头发": "頭髮", "理发": "理髮", "洗发": "洗髮", "发型": "髮型",
+    "发廊": "髮廊", "复制": "複製", "制作": "製作", "制造": "製造", "公里": "公里",
+}
+# Other legitimate Taiwan forms of a phrase, added by expand_query_tokens only.
+_S2T_PHRASE_ALTERNATES: dict[str, str] = {"回复": "回復", "答复": "答復"}
+_MAX_PHRASE = max(len(k) for k in _S2T_PHRASES)
+
+
+def _convert(text: str, phrases: dict[str, str], char_map: dict[str, str]) -> str:
+    out: list[str] = []
+    i = 0
+    while i < len(text):
+        for n in range(min(_MAX_PHRASE, len(text) - i), 1, -1):
+            hit = phrases.get(text[i : i + n])
+            if hit is not None:
+                out.append(hit)
+                i += n
+                break
+        else:
+            out.append(char_map.get(text[i], text[i]))
+            i += 1
+    return "".join(out)
+
+
 def s2t(text: str) -> str:
-    """Convert Simplified Chinese characters in text to Traditional Chinese."""
-    return "".join(S2T_MAP.get(c, c) for c in text)
+    """Convert Simplified Chinese text to Traditional (Taiwan), word-aware."""
+    return _convert(text, _S2T_PHRASES, S2T_MAP)
 
 
 def t2s(text: str) -> str:
@@ -183,6 +215,9 @@ def expand_query_tokens(raw_tokens: list[str]) -> list[str]:
         _add(trad)
         simp = t2s(token)
         _add(simp)
+        alt = _convert(token, _S2T_PHRASE_ALTERNATES, {})
+        if alt != token:
+            _add(_convert(alt, _S2T_PHRASES, S2T_MAP))
 
         # 2. Check terminology synonyms (exact term match or compound containing term)
         for cand in (token, trad, simp):
