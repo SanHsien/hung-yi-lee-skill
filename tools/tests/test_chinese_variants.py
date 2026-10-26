@@ -59,7 +59,6 @@ def test_traditional_taiwan_forms_convert_back_to_simplified() -> None:
         ("反复", "反覆"),
         ("头发", "頭髮"),
         ("复制", "複製"),
-        ("制作", "製作"),
         ("修复", "修復"),
         ("复原", "復原"),
         ("公里", "公里"),
@@ -81,9 +80,36 @@ def test_character_level_conversion_still_applies_outside_listed_words() -> None
 def test_reply_query_also_expands_to_the_other_taiwan_form() -> None:
     expanded = zh.expand_query_tokens(["回复"])
     assert "回覆" in expanded and "回復" in expanded
-    assert "回複" not in expanded
+    assert zh.s2t("回复") == "回覆"  # primary conversion never picks 回複
 
 
 @pytest.mark.parametrize("simplified", ["恢复", "回复", "反复", "头发", "复制", "修复"])
 def test_word_level_queries_reach_the_corpus(simplified: str, corpus: str) -> None:
     assert any(t in corpus for t in zh.expand_query_tokens([simplified]))
+
+
+@pytest.mark.parametrize(
+    ("simplified", "traditional"),
+    [
+        ("开发型", "開發型"),
+        ("研发型", "研發型"),
+        ("机制作用", "機制作用"),
+        ("控制作业", "控制作業"),
+        ("机制造成", "機制造成"),
+    ],
+)
+def test_word_table_does_not_misfire_across_word_boundaries(
+    simplified: str, traditional: str
+) -> None:
+    assert zh.s2t(simplified) == traditional
+
+
+def test_search_expansion_keeps_the_character_table_form() -> None:
+    assert "開發型" in zh.expand_query_tokens(["开发型"])
+    assert "機制作用" in zh.expand_query_tokens(["机制作用"])
+    assert "製作" in zh.expand_query_tokens(["制作"])
+    assert "髮型" in zh.expand_query_tokens(["发型"])
+
+
+def test_hair_converts_back_to_simplified() -> None:
+    assert zh.t2s("頭髮") == "头发"

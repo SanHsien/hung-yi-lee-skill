@@ -34,7 +34,7 @@ T2S_MAP: dict[str, str] = dict(zip(_TRADITIONAL, _SIMPLIFIED))
 # characters with several traditional forms (為 vs 爲, 裡 vs 裏, 複 vs 復). The
 # transcripts are written in Taiwan standard forms, so pin those.
 _TAIWAN_S2T_OVERRIDES = {"为": "為", "里": "裡", "着": "著", "复": "複", "台": "台"}
-_TAIWAN_T2S_OVERRIDES = {"為": "为", "裡": "里", "複": "复"}
+_TAIWAN_T2S_OVERRIDES = {"為": "为", "裡": "里", "複": "复", "髮": "发"}
 S2T_MAP.update(_TAIWAN_S2T_OVERRIDES)
 T2S_MAP.update(_TAIWAN_T2S_OVERRIDES)
 
@@ -156,11 +156,12 @@ _S2T_PHRASES: dict[str, str] = {
     "恢复": "恢復", "修复": "修復", "康复": "康復", "复原": "復原", "复兴": "復興",
     "复活": "復活", "复位": "復位", "复发": "復發", "报复": "報復", "光复": "光復",
     "收复": "收復", "复苏": "復甦", "回复": "回覆", "答复": "答覆", "批复": "批覆",
-    "反复": "反覆", "头发": "頭髮", "理发": "理髮", "洗发": "洗髮", "发型": "髮型",
-    "发廊": "髮廊", "复制": "複製", "制作": "製作", "制造": "製造", "公里": "公里",
+    "反复": "反覆", "头发": "頭髮", "理发": "理髮", "洗发": "洗髮", "复制": "複製", "公里": "公里",
 }
 # Other legitimate Taiwan forms of a phrase, added by expand_query_tokens only.
-_S2T_PHRASE_ALTERNATES: dict[str, str] = {"回复": "回復", "答复": "答復"}
+_S2T_PHRASE_ALTERNATES: dict[str, str] = {
+    "回复": "回復", "答复": "答復", "发型": "髮型", "制作": "製作", "制造": "製造",
+}
 _MAX_PHRASE = max(len(k) for k in _S2T_PHRASES)
 
 
@@ -215,6 +216,9 @@ def expand_query_tokens(raw_tokens: list[str]) -> list[str]:
         _add(trad)
         simp = t2s(token)
         _add(simp)
+        # Plain per-character result, so a wrong word-level guess can never hide
+        # the spelling the character table alone would have searched for.
+        _add("".join(S2T_MAP.get(c, c) for c in token))
         alt = _convert(token, _S2T_PHRASE_ALTERNATES, {})
         if alt != token:
             _add(_convert(alt, _S2T_PHRASES, S2T_MAP))
