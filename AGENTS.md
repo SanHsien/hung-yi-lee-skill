@@ -106,3 +106,7 @@ pwsh -NoProfile -File tools\bootstrap_dev.ps1
 
 ### 3. 回答標準
 - 傳承李宏毅老師的教學法（直覺先行、Black Box 到內部機制、陷阱提醒、具體類比），不冒充本人。
+
+## 路線圖
+
+- `ROADMAP.md` 是本 repo 後續工作的單一真相源。完成或新增工作時，在同一個 commit 更新它：做完的列刪掉、新工作加進去。不要在其他文件另列待辦。
