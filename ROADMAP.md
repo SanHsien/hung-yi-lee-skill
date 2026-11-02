@@ -7,6 +7,8 @@
 
 這是保留上游課程知識庫與教學方法的 Windows 維護線，GitHub 標記為非 fork，但來源與維護責任仍依 fork 文件（`AGENTS.md:7-13`、`FORK.md:3-12`；2026-10-29 `gh` 查詢）。2026-10-29 快照 open PR、Dependabot／code scanning 告警均為 0，CI、CodeQL、Dependency freshness、Upstream check 最近結果為 success；issue 因停用而未查到，不代表沒有問題（2026-10-29 `gh` 查詢，`c971097f327c`）。深掃提出的詞級簡繁轉換已由後續提交處理，不再列為待辦（`6617c53` 至 `1145acf`；`scripts/hungyi_chinese.py:151-163`）。
 
+2026-11-02 依賴重審：PyPI Ruff 0.17.3 超過既有延後版本 0.17.2；已在 Windows 系統暫存 venv 跑新版完整 gate 通過，延後紀錄更新為 0.17.3，維持 `ruff>=0.16`。2026-11-02 只重審依賴；上述 GitHub 狀態仍為 2026-10-29 歷史快照。決策見 `docs/DECISIONS.md`。
+
 ## 近期：可以直接動手
 
 | 項目 | 為什麼 | 驗收方式 | 建議執行者 | 證據 |
@@ -18,7 +20,7 @@
 | 項目 | 觸發條件 | 驗收方式 | 建議執行者 | 證據 |
 | --- | --- | --- | --- | --- |
 | 增量審查上游課程與程式變更 | 上游 commit／PR／issue 超過 `tools/upstream_baseline.json` 的已審水位，或 Upstream check 提醒 | 執行 `python tools/check_upstream_updates.py --strict`；逐筆讀 diff、採用／延後寫入決策；Windows gate 通過後才推進水位 | Codex | `tools/upstream_baseline.json:2-8`；`docs/UPSTREAM.md:23-32` |
-| 重審依賴延後理由 | Dependency freshness 出現新版本，超過已記錄的 `deferredLatest` | 閱讀 release notes，以新版本跑 `pwsh -NoProfile -File tools/dev_check.ps1`；記錄採用或延後原因，不只調高下限 | Claude Sonnet | `docs/DECISIONS.md:90-100`；`AGENTS.md:54-64` |
+| 重審依賴延後理由 | Dependency freshness 出現新版本，超過已記錄的 `deferredLatest` | 閱讀 release notes，以新版本跑 `pwsh -NoProfile -File tools/dev_check.ps1`；記錄採用或延後原因，不只調高下限 | Claude Sonnet | 最新決策 `docs/DECISIONS.md` 〈2026-11-02：重審 Ruff 0.17.3，維持相容下限〉；`AGENTS.md:54-64` |
 | 擴充簡繁查詢詞級規則 | 真實查詢出現漏查或跨詞界誤轉，現有案例可重現 | 先加失敗案例，同驗目標詞、跨詞界句子、原 token 保留與圖譜查詢；維護 gate 及 `tools/test_product.ps1` 通過 | Codex | `scripts/hungyi_chinese.py:151-163`；`2439285`、`1145acf`；`docs/DEVELOPMENT.md`〈執行產品測試〉 |
 
 ## 刻意不做

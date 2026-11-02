@@ -98,3 +98,15 @@
 **觸發條件**：
 - 上游 `main` 高於 `df5665d`，或出現編號 > `#4` 的 PR／Issue：依 `docs/UPSTREAM.md` 流程逐筆審查。
 - PyPI 上 `ruff` 超過 0.17.2：延後自動失效，重新審視 release notes 並跑 gate。
+
+## 2026-11-02：重審 Ruff 0.17.3，維持相容下限
+
+**決定**：更新 `.github/dependency-deferrals.json` 的 Ruff `deferredLatest`，由 `0.17.2` 改為 `0.17.3`；`requirements-dev.txt` 的 `ruff>=0.16` 維持不變。
+
+**理由與證據**：
+- PyPI 查得 Ruff `0.17.3`，已超過既有延後版本；更新前 `python tools/check_dependency_freshness.py --strict` 為 exit 1，Ruff 顯示 `REVIEW UPDATE`。
+- 已閱讀 [Ruff 0.17.3 release notes](https://github.com/astral-sh/ruff/releases/tag/0.17.3)：變更涉及 preview `shared-clock-mock`、`UP032` f-string 轉換修正、lexing／format 效能與文件，未列出本 repo 採用的 E9/F 規則變更。[PyPI 版本 metadata](https://pypi.org/pypi/ruff/0.17.3/json) 的 Python 要求為 `>=3.7`，涵蓋本 repo 的 Python 3.10–3.14 範圍；2026-11-02 實測僅涵蓋 3.14.10。
+- 在 Windows 系統暫存目錄建立獨立 venv，以 PyPI 最新維護依賴 pytest `9.2.0`、Ruff `0.17.3`、networkx `3.7` 執行 `pwsh -NoProfile -File tools/dev_check.ps1`，exit 0；涵蓋 compileall、Ruff E9/F、91 個維護測試全數通過與 12 份文件連結檢查（0 斷鏈）。更新延後紀錄後，`python tools/check_dependency_freshness.py --strict` 為 exit 0，Ruff 顯示 `DEFERRED at 0.17.3`。
+- 宣告本已允許 Ruff 0.17.3，不需要升高相容下限；此次延後的是提高宣告下限，並不阻擋安裝新版。
+
+**重新審視條件**：PyPI Ruff 超過 `0.17.3` 時，依賴新鮮度檢查會再次提醒；沿用 patch 精度，不擴大延後範圍。
