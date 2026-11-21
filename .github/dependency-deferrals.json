@@ -2,8 +2,8 @@
   "$comment": "每月依賴檢查用：已經看過、但這次不升的決定。deferredLatest 記下當時審視的版本，PyPI 一超過它就自動恢復提醒。",
   "deferrals": {
     "ruff": {
-      "deferredLatest": "0.17.3",
-      "reason": "2026-11-02 重審：0.17.3 release notes 為 preview shared-clock-mock、UP032 修正及效能／文件更新，未列出 E9/F 規則變更；Windows 暫存 venv 以 Python 3.14.10、pytest 9.2.0、ruff 0.17.3、networkx 3.7 跑完整 dev_check 全綠。宣告 >=0.16 已允許新版，維持相容下限；PyPI 超過 0.17.3 時重審"
+      "deferredLatest": "0.17.6",
+      "reason": "2026-11-21 重審：PyPI 最新 ruff 0.17.6；0.17.4–0.17.6 release notes 的 F 規則變動只有 F601/F602 效能、F823 漏報修正、F841 忽略 __traceback_hide__，未列 E9 變更；以 ruff 0.17.6 跑完整 dev_check 全綠（91 項測試）。宣告 >=0.16 已允許新版，維持相容下限；PyPI 超過 0.17.6 時重審"
     }
   }
 }

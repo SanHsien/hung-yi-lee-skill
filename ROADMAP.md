@@ -7,7 +7,7 @@
 
 這是保留上游課程知識庫與教學方法的 Windows 維護線，GitHub 標記為非 fork，但來源與維護責任仍依 fork 文件（`AGENTS.md:7-13`、`FORK.md:3-12`；2026-10-29 `gh` 查詢）。2026-10-29 快照 open PR、Dependabot／code scanning 告警均為 0，CI、CodeQL、Dependency freshness、Upstream check 最近結果為 success；issue 因停用而未查到，不代表沒有問題（2026-10-29 `gh` 查詢，`c971097f327c`）。深掃提出的詞級簡繁轉換已由後續提交處理，不再列為待辦（`6617c53` 至 `1145acf`；`scripts/hungyi_chinese.py:151-163`）。
 
-2026-11-02 依賴重審：PyPI Ruff 0.17.3 超過既有延後版本 0.17.2；已在 Windows 系統暫存 venv 跑新版完整 gate 通過，延後紀錄更新為 0.17.3，維持 `ruff>=0.16`。2026-11-02 只重審依賴；上述 GitHub 狀態仍為 2026-10-29 歷史快照。決策見 `docs/DECISIONS.md`。
+2026-11-21 依賴重審：PyPI Ruff 0.17.6 超過既有延後版本 0.17.3；以新版跑完整 dev_check 通過，延後紀錄更新為 0.17.6，維持 `ruff>=0.16`（前一次 2026-11-02 由 0.17.2 更新為 0.17.3）。2026-11-02 只重審依賴；上述 GitHub 狀態仍為 2026-10-29 歷史快照。決策見 `docs/DECISIONS.md`。
 
 ## 近期：可以直接動手
 
